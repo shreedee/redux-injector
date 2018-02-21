@@ -48,7 +48,7 @@ export function createInjectStore(initialReducers, ...args) {
 
 export function injectReducer(key, reducer, force = false) {
   // If already set, do nothing.
-  if (has(store.injectedReducers, key) || force) return;
+  if (has(store.injectedReducers, key) && (!force)) return;
 
   set(store.injectedReducers, key, reducer);
   store.replaceReducer(combineReducersRecurse(store.injectedReducers));
