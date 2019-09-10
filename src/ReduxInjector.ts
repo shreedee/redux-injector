@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux';
 import { set, has } from 'lodash';
 
-let store = {};
-let combine = combineReducers;
+var store:any = {};
+var combine = combineReducers;
 
 function combineReducersRecurse(reducers) {
   // If this is a leaf or already combined.
@@ -12,18 +12,20 @@ function combineReducersRecurse(reducers) {
 
   // If this is an object of functions, combine reducers.
   if (typeof reducers === 'object') {
-    let combinedReducers = {};
-    for (let key of Object.keys(reducers)) {
-      combinedReducers[key] = combineReducersRecurse(reducers[key]);
-    }
-    return combine(combinedReducers);
+      var combinedReducers = {};
+
+      Object.keys(reducers).forEach(function (key) {
+          combinedReducers[key] = combineReducersRecurse(reducers[key]);
+      });
+
+      return combine(combinedReducers);
   }
 
   // If we get here we have an invalid item in the reducer path.
   throw new Error({
     message: 'Invalid item in reducer tree',
     item: reducers
-  });
+  } as any);
 }
 
 export function createInjectStore(initialReducers, ...args) {
